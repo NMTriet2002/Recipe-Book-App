@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "969398336245",
+    "firebase_url": "https://recipe-book-50e8e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "recipe-book-50e8e",
+    "storage_bucket": "recipe-book-50e8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969398336245:android:337c82123f3403a684e3bc",
+        "android_client_info": {
+          "package_name": "com.cloudcomputing.recipebook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt8svJkQzCs5mD8o7jAQ8jGX_c6tFAAjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

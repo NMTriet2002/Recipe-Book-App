@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
+// Import Firebase modules
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+
 const Register: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -22,14 +25,27 @@ const Register: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeToPolicy, setAgreeToPolicy] = useState(false);
 
-  const handleRegister = () => {
+  const auth = getAuth(); // Initialize Firebase Authentication
+
+  const handleRegister = async () => {
     if (password !== confirmPassword) {
       alert('Passwords do not match. Please try again.');
     } else if (!agreeToPolicy) {
       alert('Please agree to the policy to register.');
     } else {
-      // Implement registration logic here
-      alert('Registration successful!');
+      try {
+        // Create a new user account using Firebase Authentication
+        await createUserWithEmailAndPassword(auth, email, password);
+
+        // Registration successful
+        alert('Registration successful!');
+
+        // Navigate to the login page
+        navigation.navigate('Login');
+      } catch (error) {
+        console.error('Error registering user:', error);
+        alert('An error occurred while registering. Please try again.');
+      }
     }
   };
 
@@ -124,7 +140,9 @@ const Register: React.FC<{ navigation: any }> = ({ navigation }) => {
       </View>
       <Button title="Register" onPress={handleRegister} />
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={[styles.loginLink, { fontFamily: 'serif' }]}>Already have an account? Login</Text>
+        <Text style={[styles.loginLink, { fontFamily: 'serif' }]}>
+          Already have an account? Login
+        </Text>
       </TouchableOpacity>
     </View>
   );

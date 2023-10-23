@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    if (email === 'test@gmail.com' && /^[0-9]{1}$/.test(password)) {
+  const handleLogin = async () => {
+    try {
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // User has successfully logged in, you can navigate to the home page or do other actions here.
       navigation.navigate('Home');
-    } else {
-      alert('Invalid credentials. Please use test@gmail.com and a single digit (0-9) as the password.');
+    } catch (error) {
+      // Handle login errors
+      alert('Invalid credentials. Please check your email and password.');
     }
   };
-
+  
   const handleForgotPassword = () => {
     navigation.navigate('Forgot Password');
   };
