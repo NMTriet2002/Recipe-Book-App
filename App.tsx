@@ -11,14 +11,13 @@ import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyANzKuxP4yovUzhjv0bVdFL0t6-zLPKWK4",
-  authDomain: "recipe-book-50e8e.firebaseapp.com",
-  databaseURL: "https://recipe-book-50e8e-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "recipe-book-50e8e",
-  storageBucket: "recipe-book-50e8e.appspot.com",
-  messagingSenderId: "969398336245",
-  appId: "1:969398336245:web:91d2453d5d2a513284e3bc",
-  measurementId: "G-0LG74C2KYJ"
+  apiKey: "AIzaSyCtyIzh6RYP-reAhPqnfJtgSyYI7uB5aY0",
+  authDomain: "recipe-book-b46f3.firebaseapp.com",
+  projectId: "recipe-book-b46f3",
+  storageBucket: "recipe-book-b46f3.appspot.com",
+  messagingSenderId: "292452369983",
+  appId: "1:292452369983:web:3a8f457ef4edd134e21a8a",
+  measurementId: "G-6TGG49BSPD"
 };
 initializeApp(firebaseConfig);
 

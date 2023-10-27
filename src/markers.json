@@ -1,0 +1,179 @@
+[
+    {
+      "name": "Vietnam",
+      "capital": "Hanoi",
+      "coordinates": {
+        "latitude": 21.0285,
+        "longitude": 105.8542
+      }
+    },
+    {
+      "name": "China",
+      "capital": "Beijing",
+      "coordinates": {
+        "latitude": 39.9042,
+        "longitude": 116.4074
+      }
+    },
+    {
+      "name": "Malaysia",
+      "capital": "Kuala Lumpur",
+      "coordinates": {
+        "latitude": 3.1390,
+        "longitude": 101.6869
+      }
+    },
+    {
+      "name": "Indonesia",
+      "capital": "Jakarta",
+      "coordinates": {
+        "latitude": -6.2088,
+        "longitude": 106.8456
+      }
+    },
+    {
+      "name": "Thailand",
+      "capital": "Bangkok",
+      "coordinates": {
+        "latitude": 13.7563,
+        "longitude": 100.5018
+      }
+    },
+    {
+      "name": "Singapore",
+      "capital": "Singapore",
+      "coordinates": {
+        "latitude": 1.3521,
+        "longitude": 103.8198
+      }
+    },
+    {
+      "name": "Philippines",
+      "capital": "Manila",
+      "coordinates": {
+        "latitude": 13.4125,
+        "longitude": 122.5650
+      }
+    },
+    {
+      "name": "France",
+      "capital": "Paris",
+      "coordinates": {
+        "latitude": 48.8566,
+        "longitude": 2.3522
+      }
+    },
+    {
+      "name": "Germany",
+      "capital": "Berlin",
+      "coordinates": {
+        "latitude": 52.5200,
+        "longitude": 13.4050
+      }
+    },
+    {
+      "name": "Spain",
+      "capital": "Madrid",
+      "coordinates": {
+        "latitude": 40.4168,
+        "longitude": -3.7038
+      }
+    },
+    {
+      "name": "Russia",
+      "capital": "Moscow",
+      "coordinates": {
+        "latitude": 55.7558,
+        "longitude": 37.6176
+      }
+    },
+    {
+      "name": "Italy",
+      "capital": "Rome",
+      "coordinates": {
+        "latitude": 41.9028,
+        "longitude": 12.4964
+      }
+    },
+    {
+      "name": "Portugal",
+      "capital": "Lisbon",
+      "coordinates": {
+        "latitude": 38.7223,
+        "longitude": -9.1393
+      }
+    },
+    {
+      "name": "England",
+      "capital": "London",
+      "coordinates": {
+        "latitude": 51.5074,
+        "longitude": -0.1278
+      }
+    },
+    {
+      "name": "Scotland",
+      "capital": "Edinburgh",
+      "coordinates": {
+        "latitude": 55.9533,
+        "longitude": -3.1883
+      }
+    },
+    {
+      "name": "Ireland",
+      "capital": "Dublin",
+      "coordinates": {
+        "latitude": 53.3498,
+        "longitude": -6.2603
+      }
+    },
+    {
+      "name": "Poland",
+      "capital": "Warsaw",
+      "coordinates": {
+        "latitude": 52.2297,
+        "longitude": 21.0122
+      }
+    },
+    {
+      "name": "Greece",
+      "capital": "Athens",
+      "coordinates": {
+        "latitude": 37.9838,
+        "longitude": 23.7275
+      }
+    },
+    {
+      "name": "Turkey",
+      "capital": "Ankara",
+      "coordinates": {
+        "latitude": 39.9334,
+        "longitude": 32.8597
+      }
+    },
+    {
+      "name": "USA",
+      "capital": "Washington, D.C.",
+      "coordinates": {
+        "latitude": 38.8951,
+        "longitude": -77.0369
+      }
+    },
+    {
+      "name": "Mexico",
+      "capital": "Mexico City",
+      "coordinates": {
+        "latitude": 19.4326,
+        "longitude": -99.1332
+      }
+    },
+    {
+      "name": "Canada",
+      "capital": "Ottawa",
+      "coordinates": {
+        "latitude": 45.4215,
+        "longitude": -75.6919
+      }
+    }
+  ]
+  

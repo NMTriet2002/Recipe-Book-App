@@ -4,9 +4,13 @@ import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
 
 const DATA = [
   // Sample data for recipe posts
-  { id: '1', title: 'Recipe 1', image: require('../assets/pasta.jpg') },
-  { id: '2', title: 'Recipe 2', image: require('../assets/pizza.jpg') },
-  // Add more recipe posts here
+  { id: '1', title: 'Spaghetti', image: require('../assets/pasta.jpg') },
+  { id: '2', title: 'Pizza', image: require('../assets/pizza.jpg') },
+  { id: '3', title: 'Pho', image: require('../assets/pho.jpg') },
+  { id: '4', title: 'Croissants', image: require('../assets/croissants.jpg') },
+  { id: '5', title: 'Full English breakfast', image: require('../assets/english_breakfast.jpg') },
+  { id: '6', title: 'Cao Lau Noodle', image: require('../assets/cao_lau.jpg') },
+ 
 ];
 
 const PostsTab = () => {
@@ -30,6 +34,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    marginTop: 30,
   },
   postContainer: {
     marginBottom: 16,

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, Dimensions, StatusBar } from 'react-native'; // Import StatusBar
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { Feather } from '@expo/vector-icons';
 
 const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -30,6 +31,15 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const screenDimensions = Dimensions.get('window');
   const iconSize = Math.min(screenDimensions.width, screenDimensions.height) * 0.4;
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  useEffect(() => {
+    StatusBar.setBarStyle('light-content'); // Set status bar icons to white
+    StatusBar.setBackgroundColor('#000000'); // Set the background color to black
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
   return (
     <View style={styles.container}>
@@ -44,13 +54,23 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
         onChangeText={(text) => setEmail(text)}
         value={email}
       />
-      <TextInput
-        style={[styles.input, { fontFamily: 'serif', backgroundColor: 'white' }]}
-        placeholder="Password"
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-        secureTextEntry={true}
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={[
+            styles.passwordInput,
+            styles.roundedInput,
+            styles.passwordField,
+            { fontFamily: 'serif', height: 40, backgroundColor: 'white' },
+          ]}
+          placeholder="Password"
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          secureTextEntry={!showPassword}
+        />
+        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIcon}>
+          <Feather name={showPassword ? 'eye' : 'eye-off'} size={24} color="black" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.buttonContainer}>
         <Button title="Login" onPress={handleLogin} />
       </View>
@@ -70,6 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#8B0000',
+    marginTop: 30,
   },
   icon: {
     // No fixed dimensions here; set dynamically based on screen size
@@ -95,6 +116,26 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '80%',
+    height: 40, // Increased height
+    marginTop: 10,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingLeft: 10, // Add padding to the left
+  },
+  passwordField: {
+    borderWidth: 0, // Remove the border
+  },
+  eyeIcon: {
+    paddingLeft: 5, // Add padding
+  },
+  roundedInput: {
+    borderRadius: 15, // Add border radius
   },
 });
 

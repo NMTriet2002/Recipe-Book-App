@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, Dimensions, StatusBar } from 'react-native';
 
 const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -16,6 +16,10 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const screenDimensions = Dimensions.get('window');
   const iconSize = Math.min(screenDimensions.width, screenDimensions.height) * 0.4;
+  useEffect(() => {
+    StatusBar.setBarStyle('light-content'); // Set status bar icons to white
+    StatusBar.setBackgroundColor('#000000'); // Set the background color to black
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
   return (
     <View style={styles.container}>
@@ -46,6 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#8B0000',
+    marginTop: 30,
   },
   icon: {
     // No fixed dimensions here; set dynamically based on screen size

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   Dimensions,
   Switch,
   Linking,
+  StatusBar,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
@@ -72,6 +73,11 @@ const Register: React.FC<{ navigation: any }> = ({ navigation }) => {
   
   const screenDimensions = Dimensions.get('window');
   const iconSize = Math.min(screenDimensions.width, screenDimensions.height) * 0.4;
+  
+  useEffect(() => {
+    StatusBar.setBarStyle('light-content'); // Set status bar icons to white
+    StatusBar.setBackgroundColor('#000000'); // Set the background color to black
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
   return (
     <View style={styles.container}>
@@ -154,6 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#8B0000', // Red-ish brown color
+    marginTop: 30,
   },
   icon: {
     // No fixed dimensions here; set dynamically based on screen size
