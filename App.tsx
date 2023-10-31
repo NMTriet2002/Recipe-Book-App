@@ -3,11 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { initializeApp, getApp } from 'firebase/app';
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth'; // Import the necessary Firebase modules
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+
 import Register from './src/register';
 import Login from './src/login';
 import ForgotPassword from './src/forgot_password';
 import HomeScreen from './src/home';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import FullArticle from './src/fullArticle';
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -19,8 +22,10 @@ const firebaseConfig = {
   appId: "1:292452369983:web:3a8f457ef4edd134e21a8a",
   measurementId: "G-6TGG49BSPD"
 };
-initializeApp(firebaseConfig);
 
+initializeApp(firebaseConfig);
+// Initialize Firebase Firestore
+const db = getFirestore();
 // Initialize Firebase Auth with persistence
 const auth = initializeAuth(getApp(), {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
@@ -36,6 +41,7 @@ function App() {
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false}}/>
         <Stack.Screen name="Forgot Password" component={ForgotPassword} options={{ headerShown: false}}/>
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}}/>
+        <Stack.Screen name="Full Article" component={FullArticle} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
