@@ -3,12 +3,44 @@ import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react
 import { getFirestore, collection, getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
 import { NavigationProp, ParamListBase } from '@react-navigation/native'; // Import necessary types
 
+// Function to get the flag emoji based on the country name
+const countryFlags: Record<string, string> = {
+  'Vietnam': '🇻🇳',
+  'Philippines': '🇵🇭',
+  'China': '🇨🇳',
+  'Malaysia': '🇲🇾',
+  'Indonesia': '🇮🇩',
+  'Thailand': '🇹🇭',
+  'Singapore': '🇸🇬',
+  'France': '🇫🇷',
+  'Germany': '🇩🇪',
+  'Spain': '🇪🇸',
+  'Russia': '🇷🇺',
+  'Italy': '🇮🇹',
+  'Portugal': '🇵🇹',
+  'United Kingdom': '🇬🇧',
+  'Ireland': '🇮🇪',
+  'Poland': '🇵🇱',
+  'Greece': '🇬🇷',
+  'Turkey': '🇹🇷',
+  'USA': '🇺🇸',
+  'Mexico': '🇲🇽',
+  'Canada': '🇨🇦',
+  // Add more countries and their emoji flags as needed
+};
+
+
+// Function to get the flag emoji based on the country name
+const getCountryFlagEmoji = (countryName: string) => {
+  return countryFlags[countryName] || ''; // Return the flag emoji or an empty string
+};
+
 type PostsTabProps = {
   navigation: NavigationProp<ParamListBase>; // Define navigation prop type
 };
 
 const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
-  const [posts, setPosts] = useState<{ id: string; dishName: string; image: string; briefDescription: string; recipe: string }[]>(
+  const [posts, setPosts] = useState<{ id: string; dishName: string; image: string; briefDescription: string; ingredients: string; instructions: string; countryOfOrigin: string }[]>(
     []
   );
 
@@ -18,7 +50,7 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
     const fetchPosts = async () => {
       const querySnapshot = await getDocs(collection(db, 'recipe'));
 
-      const fetchedPosts: { id: string; dishName: string; image: string; briefDescription: string; recipe: string }[] = [];
+      const fetchedPosts: { id: string; dishName: string; image: string; briefDescription: string; ingredients: string; instructions: string; countryOfOrigin: string }[] = [];
       querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
         const data = doc.data();
         fetchedPosts.push({
@@ -26,7 +58,9 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
           dishName: data.dishName,
           image: data.image, // Assuming image is a URL
           briefDescription: data.briefDescription,
-          recipe: data.recipe,
+          ingredients: data.ingredients,
+          instructions: data.instructions,
+          countryOfOrigin: data.countryOfOrigin, // Add the countryOfOrigin field
         });
       });
 
@@ -60,6 +94,12 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
               <Image source={{ uri: item.image }} style={styles.postImage} />
               <Text style={styles.postTitle}>{item.dishName}</Text>
               <Text style={styles.postDescription}>{formatDescription(item.briefDescription)}</Text>
+              <View style={styles.countryRow}>
+                <Text style={styles.countryFlag}>
+                  {getCountryFlagEmoji(item.countryOfOrigin)}
+                </Text>
+                <Text style={styles.countryName}>{item.countryOfOrigin}</Text>
+              </View>
             </View>
           </TouchableOpacity>
         )}
@@ -82,13 +122,24 @@ const styles = StyleSheet.create({
     height: 200,
   },
   postTitle: {
-    fontSize: 16,
-    marginTop: 8,
-    fontWeight: 'bold', // Add fontWeight to make it bold
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   postDescription: {
     fontSize: 14,
     marginTop: 8,
+  },
+  countryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  countryFlag: {
+    fontSize: 20,
+  },
+  countryName: {
+    fontSize: 14,
+    marginLeft: 4,
   },
 });
 

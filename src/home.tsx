@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'; // Import icons from r
 import PostsTab from './posttab';
 import WorldMapTab from './worldmap';
 import ProfileTab from './profile';
-import FullArticle from './fullArticle'; // Import the FullArticle component
 
 const Tab = createBottomTabNavigator();
 const HomeScreen = () => {
@@ -36,16 +35,6 @@ const HomeScreen = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="user" color={color} size={size} />
-          ),
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="Full Article"
-        component={FullArticle}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="newspaper-o" color={color} size={size} /> // You can choose an appropriate FontAwesome icon name
           ),
           headerShown: false,
         }}
