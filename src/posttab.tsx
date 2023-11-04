@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { getFirestore, collection, getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
-import { NavigationProp, ParamListBase } from '@react-navigation/native'; // Import necessary types
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-// Function to get the flag emoji based on the country name
 const countryFlags: Record<string, string> = {
   'Vietnam': '🇻🇳',
   'Philippines': '🇵🇭',
@@ -26,23 +25,21 @@ const countryFlags: Record<string, string> = {
   'USA': '🇺🇸',
   'Mexico': '🇲🇽',
   'Canada': '🇨🇦',
-  // Add more countries and their emoji flags as needed
 };
 
-
-// Function to get the flag emoji based on the country name
 const getCountryFlagEmoji = (countryName: string) => {
-  return countryFlags[countryName] || ''; // Return the flag emoji or an empty string
+  return countryFlags[countryName] || '';
 };
 
 type PostsTabProps = {
-  navigation: NavigationProp<ParamListBase>; // Define navigation prop type
+  navigation: NavigationProp<ParamListBase>;
 };
 
 const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
   const [posts, setPosts] = useState<{ id: string; dishName: string; image: string; briefDescription: string; ingredients: string; instructions: string; countryOfOrigin: string }[]>(
     []
   );
+  const [searchText, setSearchText] = useState(''); // State for search text
 
   useEffect(() => {
     const db = getFirestore();
@@ -56,11 +53,11 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
         fetchedPosts.push({
           id: doc.id,
           dishName: data.dishName,
-          image: data.image, // Assuming image is a URL
+          image: data.image,
           briefDescription: data.briefDescription,
           ingredients: data.ingredients,
           instructions: data.instructions,
-          countryOfOrigin: data.countryOfOrigin, // Add the countryOfOrigin field
+          countryOfOrigin: data.countryOfOrigin,
         });
       });
 
@@ -79,10 +76,24 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
     return description;
   };
 
+  // Filter posts based on search text
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.dishName.toLowerCase().includes(searchText.toLowerCase()) ||
+      post.countryOfOrigin.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
+      {/* Search input */}
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search by dish or country"
+        value={searchText}
+        onChangeText={(text) => setSearchText(text)}
+      />
       <FlatList
-        data={posts}
+        data={filteredPosts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -92,13 +103,15 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
           >
             <View style={styles.postContainer}>
               <Image source={{ uri: item.image }} style={styles.postImage} />
-              <Text style={styles.postTitle}>{item.dishName}</Text>
-              <Text style={styles.postDescription}>{formatDescription(item.briefDescription)}</Text>
-              <View style={styles.countryRow}>
-                <Text style={styles.countryFlag}>
-                  {getCountryFlagEmoji(item.countryOfOrigin)}
-                </Text>
-                <Text style={styles.countryName}>{item.countryOfOrigin}</Text>
+              <View style={styles.postContent}>
+                <Text style={styles.postTitle}>{item.dishName}</Text>
+                <Text style={styles.postDescription}>{formatDescription(item.briefDescription)}</Text>
+                <View style={styles.countryRow}>
+                  <Text style={styles.countryFlag}>
+                    {getCountryFlagEmoji(item.countryOfOrigin)}
+                  </Text>
+                  <Text style={styles.countryName}>{item.countryOfOrigin}</Text>
+                </View>
               </View>
             </View>
           </TouchableOpacity>
@@ -111,15 +124,40 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 10,
     marginTop: 30,
+    backgroundColor: '#8B0000', // Reddish brown background color
+  },
+  searchInput: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginTop:10,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10, // Rounded edges for the search bar
+    backgroundColor: '#fff', // White background for the search bar
   },
   postContainer: {
-    marginBottom: 16,
+    marginBottom: 10,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
   },
   postImage: {
     width: '100%',
     height: 200,
+  },
+  postContent: {
+    padding: 10,
   },
   postTitle: {
     fontSize: 24,
@@ -142,5 +180,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
 });
+
 
 export default PostsTab;
