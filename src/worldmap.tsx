@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { useNavigation, RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  Posts: { searchCountry: string };
+};
+
+type PostsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Posts'>;
 
 const WorldMapTab = () => {
+  const navigation = useNavigation<PostsScreenNavigationProp>();
   const [selectedCountry, setSelectedCountry] = useState('');
 
   const handleMarkerPress = (countryName: string) => {
-    // You can implement the recipe recommendation logic here
-    // For now, let's just update the selected country
     setSelectedCountry(countryName);
+
+    // Navigate to the PostsTab and initiate a search for posts based on the selected country.
+    navigation.navigate('Posts', { searchCountry: countryName });
   };
 
   const markers = [
@@ -26,8 +36,6 @@ const WorldMapTab = () => {
     { name: 'Italy', coordinates: { latitude: 41.9028, longitude: 12.4964 } },
     { name: 'Portugal', coordinates: { latitude: 38.7223, longitude: -9.1393 } },
     { name: 'England', coordinates: { latitude: 51.5074, longitude: -0.1278 } },
-    { name: 'Scotland', coordinates: { latitude: 55.9533, longitude: -3.1883 } },
-    { name: 'Ireland', coordinates: { latitude: 53.3498, longitude: -6.2603 } },
     { name: 'Poland', coordinates: { latitude: 52.2297, longitude: 21.0122 } },
     { name: 'Greece', coordinates: { latitude: 37.9838, longitude: 23.7275 } },
     { name: 'Turkey', coordinates: { latitude: 39.9334, longitude: 32.8597 } },

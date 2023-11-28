@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import { getFirestore, collection, getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { getFirestore, collection, onSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
+import { NavigationProp, ParamListBase, useRoute } from '@react-navigation/native';
 
 const countryFlags: Record<string, string> = {
   'Vietnam': '🇻🇳',
@@ -17,8 +17,7 @@ const countryFlags: Record<string, string> = {
   'Russia': '🇷🇺',
   'Italy': '🇮🇹',
   'Portugal': '🇵🇹',
-  'United Kingdom': '🇬🇧',
-  'Ireland': '🇮🇪',
+  'England': '🇬🇧',
   'Poland': '🇵🇱',
   'Greece': '🇬🇷',
   'Turkey': '🇹🇷',
@@ -39,15 +38,17 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
   const [posts, setPosts] = useState<{ id: string; dishName: string; image: string; briefDescription: string; ingredients: string; instructions: string; countryOfOrigin: string }[]>(
     []
   );
-  const [searchText, setSearchText] = useState(''); // State for search text
+  const [searchText, setSearchText] = useState('');
+  const route = useRoute();
+  const selectedCountry = (route.params as { searchCountry: string })?.searchCountry;
 
   useEffect(() => {
     const db = getFirestore();
+    const postCollection = collection(db, 'recipe');
 
-    const fetchPosts = async () => {
-      const querySnapshot = await getDocs(collection(db, 'recipe'));
-
+    const unsubscribe = onSnapshot(postCollection, (querySnapshot) => {
       const fetchedPosts: { id: string; dishName: string; image: string; briefDescription: string; ingredients: string; instructions: string; countryOfOrigin: string }[] = [];
+
       querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
         const data = doc.data();
         fetchedPosts.push({
@@ -62,11 +63,12 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
       });
 
       setPosts(fetchedPosts);
-    };
-
-    fetchPosts().catch((error) => {
-      console.error('Error fetching posts:', error);
     });
+
+    return () => {
+      // Unsubscribe from real-time updates when the component unmounts
+      unsubscribe();
+    };
   }, []);
 
   const formatDescription = (description: string) => {
@@ -76,16 +78,16 @@ const PostsTab: React.FC<PostsTabProps> = ({ navigation }) => {
     return description;
   };
 
-  // Filter posts based on search text
+  // Filter posts based on search text and selected country
   const filteredPosts = posts.filter(
     (post) =>
-      post.dishName.toLowerCase().includes(searchText.toLowerCase()) ||
-      post.countryOfOrigin.toLowerCase().includes(searchText.toLowerCase())
+      (post.dishName.toLowerCase().includes(searchText.toLowerCase()) ||
+        post.countryOfOrigin.toLowerCase().includes(searchText.toLowerCase())) &&
+      (selectedCountry ? post.countryOfOrigin === selectedCountry : true)
   );
 
   return (
     <View style={styles.container}>
-      {/* Search input */}
       <TextInput
         style={styles.searchInput}
         placeholder="Search by dish or country"
@@ -162,6 +164,9 @@ const styles = StyleSheet.create({
   postTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+    borderBottomWidth: 1, // Add a thin black border
+    borderBottomColor: 'black', // Border color
+    paddingBottom: 5, // Padding at the bottom to separate from the content
   },
   postDescription: {
     fontSize: 14,

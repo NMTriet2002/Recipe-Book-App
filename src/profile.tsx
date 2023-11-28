@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import this hook
 
 const ProfileTab = () => {
+  const navigation = useNavigation();
   // Mock user data for illustration
   const user = {
     name: 'Welcome, User',
@@ -10,15 +12,11 @@ const ProfileTab = () => {
 
   // Placeholder functions for post-related actions
   const writePost = () => {
-    // Implement logic for writing a post
+    navigation.navigate('WritePost' as never); // Redirect to the WritePost screen
   };
 
   const updatePost = () => {
-    // Implement logic for updating a post
-  };
-
-  const deletePost = () => {
-    // Implement logic for deleting a post
+    navigation.navigate('PostsList' as never);
   };
 
   const signOut = () => {
@@ -38,9 +36,6 @@ const ProfileTab = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.option} onPress={updatePost}>
         <Text style={styles.optionText}>Update Post</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.option} onPress={deletePost}>
-        <Text style={styles.optionText}>Delete Post</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.option} onPress={signOut}>
         <Text style={styles.optionText}>Sign Out</Text>

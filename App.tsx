@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { initializeApp, getApp } from 'firebase/app';
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth'; // Import the necessary Firebase modules
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { LogBox } from 'react-native';
 
 import Register from './src/register';
 import Login from './src/login';
@@ -11,6 +12,12 @@ import ForgotPassword from './src/forgot_password';
 import HomeScreen from './src/home';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import FullArticle from './src/fullArticle';
+import WritePost from './src/writePost';
+import EditPost from './src/editPost';
+import PostsList from './src/postList';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -25,7 +32,7 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 // Initialize Firebase Firestore
-const db = getFirestore();
+export const db = getFirestore();
 // Initialize Firebase Auth with persistence
 const auth = initializeAuth(getApp(), {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
@@ -42,6 +49,9 @@ function App() {
         <Stack.Screen name="Forgot Password" component={ForgotPassword} options={{ headerShown: false}}/>
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="Full Article" component={FullArticle} options={{ headerShown: false }} />
+        <Stack.Screen name="WritePost" component={WritePost} options={{ headerShown: false }} />
+        <Stack.Screen name="PostsList" component={PostsList} options={{ headerShown: false }} />
+        <Stack.Screen name="EditPost" component={EditPost} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

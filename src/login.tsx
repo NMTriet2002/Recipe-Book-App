@@ -1,52 +1,86 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, Dimensions, StatusBar } from 'react-native'; // Import StatusBar
+import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Feather } from '@expo/vector-icons';
 
 const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    StatusBar.setBarStyle('light-content');
+    StatusBar.setBackgroundColor('#000000');
+  }, []);
 
   const handleLogin = async () => {
     try {
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password);
 
-      // User has successfully logged in, you can navigate to the home page or do other actions here.
+      // Set session expiration time (30 minutes from now)
+      const expirationTime = new Date().getTime() + 30 * 60 * 1000;
+      await AsyncStorage.setItem('expirationTime', expirationTime.toString());
+
+      // User has successfully logged in, navigate to the home page
       navigation.navigate('Home');
     } catch (error) {
-      // Handle login errors
       alert('Invalid credentials. Please check your email and password.');
     }
   };
-  
+
+  // const handleLogout = async () => {
+  //   // Clear session data
+  //   await AsyncStorage.removeItem('expirationTime');
+
+  //   // Navigate to the login page
+  //   navigation.navigate('Login');
+  // };
+
+  const checkSession = async () => {
+    // Check if the session is still valid
+    const expirationTime = await AsyncStorage.getItem('expirationTime');
+    const currentTime = new Date().getTime();
+
+    if (expirationTime && currentTime < parseInt(expirationTime, 10)) {
+      // Session is still valid, navigate to the home page
+      navigation.navigate('Home');
+    } else {
+      // Session has expired, navigate to the login page
+      navigation.navigate('Login');
+    }
+  };
+
+  useEffect(() => {
+    // Check session status when the component mounts
+    checkSession();
+
+    // Set up an interval to check the session status periodically (e.g., every minute)
+    const intervalId = setInterval(checkSession, 60 * 1000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
   const handleForgotPassword = () => {
     navigation.navigate('Forgot Password');
   };
 
   const handleRegister = () => {
-    // Navigate to the Register page
     navigation.navigate('Register');
   };
 
   const screenDimensions = Dimensions.get('window');
   const iconSize = Math.min(screenDimensions.width, screenDimensions.height) * 0.4;
-  const [showPassword, setShowPassword] = useState(false);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  useEffect(() => {
-    StatusBar.setBarStyle('light-content'); // Set status bar icons to white
-    StatusBar.setBackgroundColor('#000000'); // Set the background color to black
-  }, []); // Empty dependency array means this effect runs once when the component mounts
-
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../assets/main_icon.png')}
-        style={[styles.icon, { width: iconSize, height: iconSize }]}
-      />
+      <Image source={require('../assets/main_icon.png')} style={[styles.icon, { width: iconSize, height: iconSize }]} />
       <Text style={[styles.title, { fontFamily: 'serif' }]}>Login</Text>
       <TextInput
         style={[styles.input, { fontFamily: 'serif', backgroundColor: 'white' }]}
@@ -80,6 +114,9 @@ const Login: React.FC<{ navigation: any }> = ({ navigation }) => {
       <TouchableOpacity onPress={handleRegister}>
         <Text style={styles.linkText}>Don't have an account? Register</Text>
       </TouchableOpacity>
+      {/* <TouchableOpacity onPress={handleLogout}>
+        <Text style={styles.linkText}>Logout</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -92,9 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8B0000',
     marginTop: 30,
   },
-  icon: {
-    // No fixed dimensions here; set dynamically based on screen size
-  },
+  icon: {},
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -121,21 +156,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '80%',
-    height: 40, // Increased height
+    height: 40,
     marginTop: 10,
   },
   passwordInput: {
     flex: 1,
-    paddingLeft: 10, // Add padding to the left
+    paddingLeft: 10,
   },
   passwordField: {
-    borderWidth: 0, // Remove the border
+    borderWidth: 0,
   },
   eyeIcon: {
-    paddingLeft: 5, // Add padding
+    paddingLeft: 5,
   },
   roundedInput: {
-    borderRadius: 15, // Add border radius
+    borderRadius: 15,
   },
 });
 
